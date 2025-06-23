@@ -1,9 +1,14 @@
 from .finnhub_utils import get_data_in_range
 from .googlenews_utils import getNewsData
-from .yfin_utils import YFinanceUtils
 from .reddit_utils import fetch_top_from_category
 from .stockstats_utils import StockstatsUtils
-from .yfin_utils import YFinanceUtils
+
+# 可选导入 YFinanceUtils
+try:
+    from .yfin_utils import YFinanceUtils
+except ImportError:
+    YFinanceUtils = None
+    print("⚠️ yfinance 未安装，Yahoo Finance功能不可用")
 
 from .interface import (
     # News and sentiment functions

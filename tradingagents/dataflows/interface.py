@@ -11,7 +11,14 @@ import json
 import os
 import pandas as pd
 from tqdm import tqdm
-import yfinance as yf
+# 可选导入 yfinance
+try:
+    import yfinance as yf
+    YFINANCE_AVAILABLE = True
+except ImportError:
+    yf = None
+    YFINANCE_AVAILABLE = False
+
 from openai import OpenAI
 from .config import get_config, set_config, DATA_DIR
 
@@ -630,6 +637,8 @@ def get_YFin_data_online(
     start_date: Annotated[str, "Start date in yyyy-mm-dd format"],
     end_date: Annotated[str, "Start date in yyyy-mm-dd format"],
 ):
+    if not YFINANCE_AVAILABLE:
+        return f"yfinance 未安装，无法获取 {symbol} 的在线数据。请安装: pip install yfinance"
 
     datetime.strptime(start_date, "%Y-%m-%d")
     datetime.strptime(end_date, "%Y-%m-%d")
