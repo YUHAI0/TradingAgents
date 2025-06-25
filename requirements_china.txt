@@ -1,0 +1,60 @@
+# 中国A股TradingAgents系统依赖
+
+# 基础依赖
+pandas>=1.5.0
+numpy>=1.20.0
+requests>=2.28.0
+python-dateutil>=2.8.0
+
+# 数据源依赖
+tushare>=1.2.89          # Tushare Pro数据接口
+akshare>=1.12.0          # AkShare开源数据接口
+stockstats>=0.5.0        # 股票技术指标计算
+# TA-Lib>=0.4.0           # 技术分析库（可选，Windows安装困难）
+
+# 多代理协作框架依赖
+langgraph>=0.0.40        # LangGraph多代理工作流框架
+langchain-core>=0.1.0    # LangChain核心组件
+langchain-openai>=0.0.8  # OpenAI LangChain集成（可选）
+langchain-anthropic>=0.1.0  # Anthropic LangChain集成（可选）
+langchain-google-genai>=1.0.0  # Google GenAI LangChain集成（可选）
+chromadb>=0.4.0          # ChromaDB向量数据库，用于记忆系统
+protobuf>=3.20.0,<4.0.0  # 协议缓冲区，修复ChromaDB兼容性问题
+
+# LLM和AI依赖
+requests>=2.28.0         # HTTP请求库
+tenacity>=8.0.0         # 重试库
+httpx>=0.24.0           # 异步HTTP客户端
+pydantic>=2.0.0         # 数据验证库
+
+# 工具库
+tqdm>=4.64.0            # 进度条
+python-dotenv>=0.19.0   # 环境变量管理
+typing-extensions>=4.5.0 # 类型注解扩展
+
+# CLI界面依赖
+typer>=0.9.0            # 命令行界面框架
+rich>=13.0.0            # 富文本终端界面
+questionary>=1.10.0     # 交互式命令行提示
+
+# 可选依赖（提升功能）
+matplotlib>=3.5.0       # 图表绘制（可选）
+seaborn>=0.11.0         # 数据可视化（可选）
+plotly>=5.10.0          # 交互式图表（可选）
+
+# 系统依赖
+argparse               # 命令行参数解析（Python内置）
+datetime               # 日期时间处理（Python内置）
+os                     # 操作系统接口（Python内置）
+sys                    # 系统相关参数（Python内置）
+time                   # 时间相关函数（Python内置）
+collections            # 集合数据类型（Python内置）
+enum                   # 枚举类型（Python内置）
+re                     # 正则表达式（Python内置）
+
+# 测试依赖（开发用）
+pytest>=7.0.0          # 测试框架
+pytest-asyncio>=0.21.0 # 异步测试 
+yfinance>=0.1.0        # 金融数据获取
+openai>=1.0.0          # OpenAI API
+efinance>=0.1.0        # 金融数据获取
