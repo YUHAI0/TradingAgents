@@ -94,8 +94,31 @@ class ChinaAShareTradingAgents:
         # 初始化LLM管理器
         self.llm_manager = ChinaLLMManager(self.config)
         
-        # 设置分析师
-        self.selected_analysts = selected_analysts or ["market", "news", "fundamentals", "sentiment"]
+        # 设置分析师 - 支持中英文名称映射
+        if selected_analysts:
+            # 中文到英文的映射
+            analyst_mapping = {
+                "市场技术": "market",
+                "新闻": "news", 
+                "基本面": "fundamentals",
+                "情绪": "sentiment",
+                # 英文名称直接保留
+                "market": "market",
+                "news": "news",
+                "fundamentals": "fundamentals", 
+                "sentiment": "sentiment"
+            }
+            
+            # 转换中文名称为英文
+            self.selected_analysts = []
+            for analyst in selected_analysts:
+                if analyst in analyst_mapping:
+                    self.selected_analysts.append(analyst_mapping[analyst])
+                else:
+                    # 如果不在映射中，直接使用原名称
+                    self.selected_analysts.append(analyst)
+        else:
+            self.selected_analysts = ["market", "news", "fundamentals", "sentiment"]
         
         # 初始化日志系统 - 只在控制台显示，不保存到文件
         log_level = logging.DEBUG if debug else logging.INFO

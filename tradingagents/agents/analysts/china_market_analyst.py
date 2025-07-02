@@ -94,7 +94,12 @@ MACD类指标：
 
         chain = prompt | llm.bind_tools(tools)
 
-        result = chain.invoke(state["messages"])
+        # 确保消息不为空，如果为空则提供默认消息
+        messages = state["messages"]
+        if not messages or len(messages) == 0:
+            messages = [("human", f"请分析{ticker}的市场技术指标")]
+        
+        result = chain.invoke({"messages": messages})
 
         return {
             "messages": [result],
@@ -167,7 +172,12 @@ def create_china_news_analyst(llm, toolkit):
 
         chain = prompt | llm.bind_tools(tools)
 
-        result = chain.invoke(state["messages"])
+        # 确保消息不为空，如果为空则提供默认消息
+        messages = state["messages"]
+        if not messages or len(messages) == 0:
+            messages = [("human", f"请分析{ticker}的相关新闻和政策")]
+        
+        result = chain.invoke({"messages": messages})
 
         return {
             "messages": [result],
@@ -247,7 +257,12 @@ def create_china_fundamentals_analyst(llm, toolkit):
 
         chain = prompt | llm.bind_tools(tools)
 
-        result = chain.invoke(state["messages"])
+        # 确保消息不为空，如果为空则提供默认消息
+        messages = state["messages"]
+        if not messages or len(messages) == 0:
+            messages = [("human", f"请分析{ticker}的基本面和财务状况")]
+        
+        result = chain.invoke({"messages": messages})
 
         return {
             "messages": [result],
@@ -332,7 +347,12 @@ def create_china_sentiment_analyst(llm, toolkit):
 
         chain = prompt | llm.bind_tools(tools)
 
-        result = chain.invoke(state["messages"])
+        # 确保消息不为空，如果为空则提供默认消息
+        messages = state["messages"]
+        if not messages or len(messages) == 0:
+            messages = [("human", f"请分析{ticker}的市场情绪和资金流向")]
+        
+        result = chain.invoke({"messages": messages})
 
         return {
             "messages": [result],

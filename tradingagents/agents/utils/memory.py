@@ -1,25 +1,64 @@
 import chromadb
 from chromadb.config import Settings
-from openai import OpenAI
+
+try:
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
 
 
 class FinancialSituationMemory:
     def __init__(self, name, config):
-        if config["backend_url"] == "http://localhost:11434/v1":
+        self.config = config
+        self.client = None
+        
+        if config.get("backend_url") == "http://localhost:11434/v1":
             self.embedding = "nomic-embed-text"
+        elif config.get("llm_provider", "").lower() in ["qwen", "zhipu", "baichuan", "ernie"]:
+            # 中国LLM提供商，使用简单的文本嵌入
+            self.embedding = "simple_text"
         else:
             self.embedding = "text-embedding-3-small"
-            self.client = OpenAI()
+            if OPENAI_AVAILABLE:
+                self.client = OpenAI()
+            else:
+                print("⚠️ OpenAI 不可用，使用简单文本嵌入")
+                self.embedding = "simple_text"
+                
         self.chroma_client = chromadb.Client(Settings(allow_reset=True))
         self.situation_collection = self.chroma_client.create_collection(name=name)
 
     def get_embedding(self, text):
-        """Get OpenAI embedding for a text"""
+        """Get embedding for a text"""
         
-        response = self.client.embeddings.create(
-            model=self.embedding, input=text
-        )
-        return response.data[0].embedding
+        if self.embedding == "simple_text":
+            # 简单的文本嵌入：使用字符的ASCII值和长度
+            import hashlib
+            text_hash = hashlib.md5(text.encode()).hexdigest()
+            # 创建一个固定长度的向量
+            embedding = []
+            for i in range(0, len(text_hash), 2):
+                embedding.append(int(text_hash[i:i+2], 16) / 255.0)
+            # 确保向量长度为384（常见的嵌入维度）
+            while len(embedding) < 384:
+                embedding.extend(embedding[:384-len(embedding)])
+            return embedding[:384]
+        elif self.client:
+            response = self.client.embeddings.create(
+                model=self.embedding, input=text
+            )
+            return response.data[0].embedding
+        else:
+            # 回退到简单嵌入
+            import hashlib
+            text_hash = hashlib.md5(text.encode()).hexdigest()
+            embedding = []
+            for i in range(0, len(text_hash), 2):
+                embedding.append(int(text_hash[i:i+2], 16) / 255.0)
+            while len(embedding) < 384:
+                embedding.extend(embedding[:384-len(embedding)])
+            return embedding[:384]
 
     def add_situations(self, situations_and_advice):
         """Add financial situations and their corresponding advice. Parameter is a list of tuples (situation, rec)"""

@@ -3,7 +3,7 @@
 整合tushare、akshare等国内数据源，提供与原系统兼容的接口
 """
 
-from typing import Annotated
+from typing import Annotated, Dict
 from datetime import datetime, timedelta
 from .china_stock_utils import (
     get_china_stock_data,
@@ -12,6 +12,18 @@ from .china_stock_utils import (
     get_china_market_sentiment,
     get_china_stock_fundamentals
 )
+
+# 全局配置变量
+_china_config: Dict = {}
+
+def set_china_config(config: Dict):
+    """设置中国A股数据接口的配置"""
+    global _china_config
+    _china_config = config
+
+def get_china_config() -> Dict:
+    """获取中国A股数据接口的配置"""
+    return _china_config or {}
 
 # 主要在线数据接口
 def get_china_stock_data_online(

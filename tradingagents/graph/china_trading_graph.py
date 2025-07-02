@@ -19,7 +19,7 @@ from tradingagents.agents.utils.china_agent_states import (
 )
 from tradingagents.dataflows.china_interface import set_china_config
 
-from .conditional_logic import ConditionalLogic
+from .china_conditional_logic import ChinaConditionalLogic
 from .china_setup import ChinaGraphSetup
 from .propagation import Propagator
 from .reflection import Reflector
@@ -31,7 +31,7 @@ class ChinaTradingAgentsGraph:
 
     def __init__(
         self,
-        selected_analysts=["market", "news", "fundamentals"],
+        selected_analysts=["市场技术"],  # 默认使用市场技术分析师
         debug=False,
         config: Dict[str, Any] = None,
         llm_provider="qwen",  # 默认使用通义千问
@@ -58,7 +58,7 @@ class ChinaTradingAgentsGraph:
         )
 
         # 初始化中国LLM管理器
-        self.llm_manager = ChinaLLMManager()
+        self.llm_manager = ChinaLLMManager(self.config)
         
         # 根据配置获取LLM实例
         self.deep_thinking_llm = self.llm_manager.get_llm(
@@ -84,7 +84,7 @@ class ChinaTradingAgentsGraph:
         self.tool_nodes = self._create_china_tool_nodes()
 
         # 初始化组件
-        self.conditional_logic = ConditionalLogic()
+        self.conditional_logic = ChinaConditionalLogic()
         self.graph_setup = ChinaGraphSetup(
             self.quick_thinking_llm,
             self.deep_thinking_llm,

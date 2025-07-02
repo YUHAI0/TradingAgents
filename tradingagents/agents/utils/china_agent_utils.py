@@ -319,4 +319,81 @@ class ChinaToolkit:
             "limit_down_price": round(limit_down_price, 2),
             "limit_pct": limit_pct * 100,
             "stock_type": stock_type
-        } 
+        }
+
+    # 添加在线方法的别名，以便与 china_trading_graph.py 兼容
+    @staticmethod
+    @tool
+    def get_china_stock_data_online(
+        symbol: Annotated[str, "股票代码，如 000001.SZ"],
+        start_date: Annotated[str, "开始日期，格式: yyyy-mm-dd"],
+        end_date: Annotated[str, "结束日期，格式: yyyy-mm-dd"],
+    ) -> str:
+        """在线获取中国A股股票价格数据（别名方法）"""
+        return ChinaToolkit.get_china_stock_data(symbol, start_date, end_date)
+
+    @staticmethod
+    @tool
+    def get_china_technical_indicators_online(
+        symbol: Annotated[str, "股票代码，如 000001.SZ"],
+        indicator: Annotated[str, "技术指标名称，如 MACD, KDJ, RSI"],
+        curr_date: Annotated[str, "当前交易日期，格式: yyyy-mm-dd"],
+        look_back_days: Annotated[int, "回看天数"] = 30,
+    ) -> str:
+        """在线获取中国A股技术指标分析报告（别名方法）"""
+        return ChinaToolkit.get_china_technical_indicators(symbol, indicator, curr_date, look_back_days)
+
+    @staticmethod
+    @tool
+    def get_china_stock_news_online(
+        symbol: Annotated[str, "股票代码，如 000001.SZ"],
+        curr_date: Annotated[str, "当前日期，格式: yyyy-mm-dd"],
+        days_back: Annotated[int, "回看天数"] = 7,
+    ) -> str:
+        """在线获取中国A股相关新闻（别名方法）"""
+        return ChinaToolkit.get_china_stock_news(symbol, curr_date, days_back)
+
+    @staticmethod
+    @tool
+    def get_china_market_news_online(
+        curr_date: Annotated[str, "当前日期，格式: yyyy-mm-dd"],
+        days_back: Annotated[int, "回看天数"] = 7,
+    ) -> str:
+        """在线获取中国A股市场新闻"""
+        return ChinaToolkit.get_china_stock_news("市场", curr_date, days_back)
+
+    @staticmethod
+    @tool
+    def get_china_fundamentals_online(
+        symbol: Annotated[str, "股票代码，如 000001.SZ"],
+        curr_date: Annotated[str, "当前日期，格式: yyyy-mm-dd"],
+    ) -> str:
+        """在线获取中国A股基本面数据（别名方法）"""
+        return ChinaToolkit.get_china_fundamentals(symbol, curr_date)
+
+    @staticmethod
+    @tool
+    def get_china_financial_reports_online(
+        symbol: Annotated[str, "股票代码，如 000001.SZ"],
+        curr_date: Annotated[str, "当前日期，格式: yyyy-mm-dd"],
+    ) -> str:
+        """在线获取中国A股财务报告"""
+        return ChinaToolkit.get_china_fundamentals(symbol, curr_date)
+
+    @staticmethod
+    @tool
+    def get_china_company_info(
+        symbol: Annotated[str, "股票代码，如 000001.SZ"],
+        curr_date: Annotated[str, "当前日期，格式: yyyy-mm-dd"],
+    ) -> str:
+        """获取中国A股公司信息"""
+        return ChinaToolkit.get_china_fundamentals(symbol, curr_date)
+
+    @staticmethod
+    @tool
+    def get_china_financial_data(
+        symbol: Annotated[str, "股票代码，如 000001.SZ"],
+        curr_date: Annotated[str, "当前日期，格式: yyyy-mm-dd"],
+    ) -> str:
+        """获取中国A股财务数据"""
+        return ChinaToolkit.get_china_fundamentals(symbol, curr_date) 

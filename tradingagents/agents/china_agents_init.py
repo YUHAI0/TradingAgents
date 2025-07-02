@@ -220,6 +220,7 @@ __all__ = [
     
     # 工具和状态
     "ChinaToolkit",
+    "create_china_msg_delete",
     "ChinaAgentState",
     "ChinaInvestDebateState",
     "ChinaRiskDebateState",
@@ -235,7 +236,7 @@ __all__ = [
     "get_china_market_sentiment_online",
     
     # 配置和LLM
-    "CHINA_CONFIG",
+    "CHINA_DEFAULT_CONFIG",
     "ChinaLLMManager"
 ]
 
